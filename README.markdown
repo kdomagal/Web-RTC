@@ -5,8 +5,8 @@ I used [socket.io](https://github.com/LearnBoost/Socket.IO) websockets implement
 
 Run server with the following command: 
 
-	+	for productio - `NODE_ENV=production node index.js`  
-	+ for development (more debug info etc) - `NODE_ENV=development node index.js`  
++		for productio - `NODE_ENV=production node index.js`</li>
++		for development (more debug info etc) - `NODE_ENV=development node index.js`</li>
 
 Server will be runing at http://localhost:8080/.
 
