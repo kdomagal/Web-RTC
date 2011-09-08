@@ -1,0 +1,58 @@
+<html>
+<title>Wideo Konferencja - nowa sesja</title> 
+
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="signaling.js"></script>
+
+<script>
+
+var invitationUrl;
+
+window.onload = function() {
+    if (! window.webkitPeerConnection) {
+        window.location = "nosupport.html";
+    }
+
+    invitationUrl = document.getElementById('invitationUrl');
+
+    Signaling.onopen = function() {
+    		console.log("create - signaling.onopen");
+        invitationUrl.hidden = true;
+        document.getElementById('chat').hidden = false;
+        self.chat.startChat();
+    }
+
+    Signaling.create(function(url, fifoId) {
+    		console.log("create - signaling.create");
+        invitationUrl.value = url;
+    });
+}
+
+</script>
+
+<body>
+
+  <div id="heading">
+    <h3>Wideo Konferencja</h3>
+  </div>
+
+  <div id="content">
+    <p>Witaj!</p>
+
+    <p>Właśnie utworzyłeś sesję wideo konferencji. Aby zaprosić do rozmowy:</p>
+    <ul>
+      <li>Upewnij się, że używacie przeglądarek z rozszerzonym silnikiem WebKit.</li>
+      <li>Skopiuj poniższy link i prześlij go drugiej osobie oraz poinstuuj ją aby otworzyła go w sowjej przeglądarce.</li>
+      <li>Poczekaj aż druga osoba zaakceptuje zaproszenie.</li>
+    </ul>
+    <input type="text" id="invitationUrl" readonly size=80></input>
+  </div>
+
+  <iframe id="chat" name="chat" src="chat.html" hidden="true"></iframe>
+</div>
+</body>
+</html> 

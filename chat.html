@@ -1,0 +1,141 @@
+<html>
+
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link href="chat.css" rel="stylesheet" type="text/css" />
+
+<script>
+
+var content;
+
+var Signaling = top.Signaling;
+
+window.onload = function() {
+    content = document.getElementById('content');
+
+    chatHistory  = document.getElementById('chatHistory');
+    chatMessage  = document.getElementById('chatMessage');
+
+    selfView     = document.getElementById('selfView');
+    peerView     = document.getElementById('peerView');
+    addButton    = document.getElementById('addButton');
+    removeButton = document.getElementById('removeButton');
+    
+    removeButton.disabled = true;
+}
+
+function startChat() {
+    content.hidden = false;
+    Signaling.Peer.onmessage   = receiveChatMessage;
+    Signaling.Peer.onaddstream = receiveVideoStream;
+}
+
+/* -------------------------------------------------------------------------
+ * Instant messaging
+ * ------------------------------------------------------------------------- */
+
+var chatHistory;
+var chatMessage;
+
+function receiveChatMessage(e) {
+		console.log("chat message received");
+    chatHistory.value += "PEER: " + e.data + "\n";
+}
+
+function sendChatMessage() {
+    chatHistory.value += "ME: " + chatMessage.value + "\n";
+    Signaling.Peer.send(chatMessage.value);
+    chatMessage.value = "";
+}
+
+/* -------------------------------------------------------------------------
+ * Voice & video
+ * ------------------------------------------------------------------------- */
+
+var selfView;
+var peerView;
+
+var addButton;
+
+function requestSelfVideo() {
+		console.log("requestSelfVideo");
+    navigator.webkitGetUserMedia('audio,video user', function(stream) {
+    		console.log("got self stream");
+        selfView.src = webkitURL.createObjectURL(stream);
+        Signaling.Peer.addStream(stream);
+    });
+    addButton.disabled = true;
+    removeButton.disabled = false;
+}
+
+function receiveVideoStream(e) {
+		console.log("onaddstream event: receiveVideoStream");
+    peerView.src = webkitURL.createObjectURL(e.stream);
+}
+
+function stopSelfVideo() {
+		selfView.src = 0;
+		addButton.disabled = false;
+		removeButton.disabled = true;
+		try {
+			Signaling.Peer.removeStream();
+		} catch (err) { console.log(err); }
+}
+
+</script>
+
+<body>
+
+<div id="content">
+
+  <form id="videoForm">
+    <div id="videos"></div>
+      <table align=center>
+	<tr><td>Widok lokalny</td><td>Widok zdalny</td></tr>
+	<tr height="240">
+	  <td width="320">
+	    <video id="selfView"
+		   width="320" height="240" autoplay controls>
+	    </video>
+	  </td>
+          <td width="320">
+	    <video id="peerView"
+		   width="320" height="240" autoplay controls>
+	    </video>
+	  </td>
+	</tr>
+	<tr><td>
+	    <input id="addButton"
+		   type="button"
+		   value="Włącz kamerę"
+		   onclick="requestSelfVideo();">
+		   
+		   <input id="removeButton"
+		   type="button"
+		   value="Wyłącz kamerę"
+		   onclick="stopSelfVideo();">
+	  </td>
+	  <td>
+	  </td>
+	</tr>
+      </table>        
+  </form>
+
+  <hr />
+
+  <div id="chat">
+    <form id="chatForm" action="javascript:sendChatMessage();">
+      Text chat
+      <input id="chatMessage" type="text" size="40">
+      <input type="submit" value="Wyślij">
+    </form>
+    <textarea id="chatHistory" readonly cols="80" rows="6"></textarea>
+  </div>
+
+  <hr />
+
+  <div id="footer">Autor: Karol Domagała, na podstawie Web RTC &nbsp;<a href="http://labs.ericsson.com/apis/web-real-time-communication">Ericsson Labs</a>.
+
+</div>
+
+</body>
+</html> 

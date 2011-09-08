@@ -1,0 +1,62 @@
+<html>
+<title>Wideo Konferencja - nowa sesja</title> 
+
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="signaling.js"></script>
+
+<script>
+
+window.onload = function() {
+    if (! window.webkitPeerConnection) {
+        window.location = "nosupport.html";
+    }
+}
+
+var connectingStatus;
+
+function acceptClicked() {
+    document.getElementById('content').hidden = true;
+    connectingStatus = document.getElementById('connectingStatus');
+    connectingStatus.hidden = false;
+
+    Signaling.onopen = function() {
+        connectingStatus.hidden = true;
+        document.getElementById('chat').hidden = false;
+        self.chat.startChat();
+    }
+
+    Signaling.create(function(url, fifoId) {
+        // get FIFO id from the url, accepting any variable name to refer to it
+        var url = window.location.toString();
+        len=url.length;
+        offset = url.indexOf("?");
+        params = url.substr(offset,len);
+        paramList = params.split("=");
+
+        Signaling.accept(paramList[1]);
+    });
+}
+
+</script>
+
+<body>
+
+  <div id="heading">
+    <h3>Wideo Konferencja</h3>
+  </div>
+
+  <form id="content">
+    Zostałeś zaproszony do konwersacji. Naciśnij przycisk żeby zaakceptować.
+    <input type="button" onclick="acceptClicked();" value="Akceptuję"/>
+  </form>
+
+  <div id="connectingStatus" hidden="true">Łączenie...</div>
+
+  <iframe id="chat" name="chat" src="chat.html" hidden="true"></iframe>
+
+</body>
+</html> 

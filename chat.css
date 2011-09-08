@@ -1,0 +1,29 @@
+body {
+    border: none;
+    border-width: 0;
+    background-color:#aab6ca;
+    font-family: Arial, Helvetica;
+    text-align: center;
+    padding: 5px;
+}
+
+#heading {
+    font-color: #ffffff;
+}
+
+#chat, #videoForm {
+    background-image: url(images/bg.png);
+    background-repeat: repeat;
+    padding: 5px;
+}
+
+#selfView, #peerView {
+    background-color: #444;
+}
+
+hr {
+    color: #000;
+    background-color: #000;
+    height: 2px;
+    margin: 5px;
+}

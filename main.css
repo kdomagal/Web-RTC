@@ -1,0 +1,55 @@
+body {
+    border: none;
+    border-width: 0;
+    background-color:#aab6ca;
+    font-family: Arial, Helvetica;
+    background-image: url(images/headbg.png);
+    background-repeat: repeat-x;
+}
+
+#heading {
+    padding-top: 20px;
+    color: #ffffff;
+    letter-spacing: 0.15em;
+    font-size: large;
+    font-style: bold;
+    text-align: center;
+}
+
+#logo {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+}
+
+#icon {
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    width: 99px;
+    height: 70px;
+}
+
+#content, #connectingStatus {
+    position: absolute;
+    left: 0;
+    top: 86px;
+    width: 100%;
+    background-image: url(images/bg.png);
+    background-repeat: repeat;
+    padding: 10px;
+}
+
+#chat {
+    position: absolute;
+    left: 0;
+    top: 86px;
+
+    width: 100%;
+    border: none;
+    border-width: 0;
+
+    min-height: 600;
+    height: auto !important;
+    margin: 0 auto -4em;
+}
