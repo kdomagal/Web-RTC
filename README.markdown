@@ -10,7 +10,7 @@ Run server with the following command:
 
 Server will be runing at http://localhost:8080/.
 
-No more configuration is required. 
+No more configuration is required. Please remember about installing modified [WebKit](https://labs.ericsson.com/apis/web-real-time-communication/downloads) library.
 
 Code comments are in Polish language for now. I will fix it soon...
 
