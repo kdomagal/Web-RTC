@@ -1,7 +1,8 @@
 #Video Chat with ConnectionPeer API, WebSockets and Node.js
 
 The source is a demo appliaction based on [Ericcson Labs video chat demo](https://labs.ericsson.com/apis/web-real-time-communication/).
-I used [socket.io](https://github.com/LearnBoost/Socket.IO) websockets implementation.
+I used [socket.io](https://github.com/LearnBoost/Socket.IO) websockets implementation.  
+I know there are still some bugs, but it is only a demo ;)
 
 Run server with the following command: 
 
