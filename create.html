@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html>
-<title>Wideo Konferencja - nowa sesja</title> 
+<title>Video chat (node.js + web-rtc) - new session</title> 
 
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <link href="main.css" rel="stylesheet" type="text/css" />
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="signaling.js"></script>
 
@@ -37,22 +37,21 @@ window.onload = function() {
 <body>
 
   <div id="heading">
-    <h3>Wideo Konferencja</h3>
+    <h3>Node.js based video chat</h3>
   </div>
 
   <div id="content">
-    <p>Witaj!</p>
+    <p>Welcome!</p>
 
-    <p>Właśnie utworzyłeś sesję wideo konferencji. Aby zaprosić do rozmowy:</p>
+    <p>New chat session has been created. To invite to a chat:</p>
     <ul>
-      <li>Upewnij się, że używacie przeglądarek z rozszerzonym silnikiem WebKit.</li>
-      <li>Skopiuj poniższy link i prześlij go drugiej osobie oraz poinstuuj ją aby otworzyła go w sowjej przeglądarce.</li>
-      <li>Poczekaj aż druga osoba zaakceptuje zaproszenie.</li>
+      <li>Copy the link below and pass it to your friend.</li>
+      <li>Wait to your friend accepts the invitation.</li>
     </ul>
     <input type="text" id="invitationUrl" readonly size=80></input>
   </div>
 
-  <iframe id="chat" name="chat" src="chat.html" hidden="true"></iframe>
+  <iframe id="chat" name="chat" src="chat.html" hidden="true" height="500px"></iframe>
 </div>
 </body>
 </html> 

@@ -1,7 +1,7 @@
-var hat = require("hat"); // generowanie unikatowych id
+var hat = require("hat"); // unique ids
 
 var count = 0;
-var sockets = []	//tablica z podlaczonymi uzytkownikami
+var sockets = []	// array with connected users
 
 function route(socket, handle) {
 

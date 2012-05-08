@@ -1,15 +1,15 @@
 
 /**
-	* Klasa logująca. Możliwe 3 poziomy logowania:
-	* INFO - informujacy
-	* WARNING - ostrzeżenia
-	* ERROR - błędy
+	* Simple logging class. 3 levels of log:
+	* INFO
+	* WARNING
+	* ERROR
 	* DEBUG - debug mode
-	* [] - Brak ustawionego poziomu logowania loguje wszystko.
+	* [] - None means to log everything.
 	*
-	*	Poziomy mogą być łączone np: [DEBUG, ERROR]
+	*	Log levels can be combined: [DEBUG, ERROR] etc.
 	*
-	* Autor: Karol Domagała
+	* Author: Karol Domagala
 	*
 */
 
@@ -20,7 +20,7 @@ var Log = {
 	WARNING : 3,
 	ERROR : 	4,
 
-	severity : [1,4],	// domyślnie włączone poziomy INFO i ERROR
+	severity : [1,4],	// INFO i ERROR
 
 
 	info : function(msg) {

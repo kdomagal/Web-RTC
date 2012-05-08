@@ -1,13 +1,81 @@
+<!DOCTYPE html>
 <html>
 
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <link href="chat.css" rel="stylesheet" type="text/css" />
 
+
+<style>
+
+input[type="text"] {
+	border: 1px solid black;
+}
+
+.videoDialog {
+	display:none;
+}
+
+.videoDialog div {
+	padding:0;
+
+	background-color:#fff;
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif
+
+	width:400px;
+	border:5px solid #666;
+
+	border:5px solid rgba(232, 232, 232, 0.8);
+
+	-moz-border-radius: 0 0 8px 8px;
+	-webkit-border-radius:0 0 8px 8px;
+	border-top: 0px;	
+	
+	margin-bottom:-5px;
+}
+
+
+.videoDialog:hover div {
+	border-color:rgba(82, 82, 82, 0.8);	
+}
+.videoDialog h2 {
+		margin-top: 0px;
+		margin-bottom:0px;
+		color:#fff;
+		background-color:rgb(232, 232, 232);
+		padding:5px 10px;
+		-moz-border-radius:8px 8px 0 0;
+		-webkit-border-radius:8px 8px 0 0;
+		font-size:20px;
+		
+		filter:alpha(opacity=80);
+		opacity: 0.8;
+		-moz-opacity:0.8;
+		
+		color: gray;
+		
+	}
+
+.videoDialog:hover h2 {
+	color: white;
+	background-color:rgb(82, 82, 82);
+}
+
+</style>
+
+
 <script>
+
+$(document).ready(function() {
+	$(".videoDialog").draggable();
+});
 
 var content;
 
 var Signaling = top.Signaling;
+
+var localStream;
 
 window.onload = function() {
     content = document.getElementById('content');
@@ -27,6 +95,7 @@ function startChat() {
     content.hidden = false;
     Signaling.Peer.onmessage   = receiveChatMessage;
     Signaling.Peer.onaddstream = receiveVideoStream;
+    Signaling.Peer.onremovestream = removeRemoteStream;
 }
 
 /* -------------------------------------------------------------------------
@@ -38,11 +107,11 @@ var chatMessage;
 
 function receiveChatMessage(e) {
 		console.log("chat message received");
-    chatHistory.value += "PEER: " + e.data + "\n";
+    chatHistory.value += "["+ new Date().toLocaleTimeString() +"] Zdalny: " + e.data + "\n";
 }
 
 function sendChatMessage() {
-    chatHistory.value += "ME: " + chatMessage.value + "\n";
+    chatHistory.value += "["+ new Date().toLocaleTimeString() +"] Ja: " + chatMessage.value + "\n";
     Signaling.Peer.send(chatMessage.value);
     chatMessage.value = "";
 }
@@ -60,8 +129,10 @@ function requestSelfVideo() {
 		console.log("requestSelfVideo");
     navigator.webkitGetUserMedia('audio,video user', function(stream) {
     		console.log("got self stream");
+ 				localStream = stream;
         selfView.src = webkitURL.createObjectURL(stream);
         Signaling.Peer.addStream(stream);
+        $(".local").slideDown(500);
     });
     addButton.disabled = true;
     removeButton.disabled = false;
@@ -70,15 +141,23 @@ function requestSelfVideo() {
 function receiveVideoStream(e) {
 		console.log("onaddstream event: receiveVideoStream");
     peerView.src = webkitURL.createObjectURL(e.stream);
+    $(".remote").slideDown(500);
 }
 
 function stopSelfVideo() {
 		selfView.src = 0;
-		addButton.disabled = false;
-		removeButton.disabled = true;
 		try {
-			Signaling.Peer.removeStream();
+			Signaling.Peer.removeStream(localStream);
 		} catch (err) { console.log(err); }
+				addButton.disabled = false;
+		    removeButton.disabled = true;
+		$(".local").slideUp(500);
+}
+
+function removeRemoteStream() {
+	console.log("Remote Stream removed")
+	peerView.src = 0;
+	$(".remote").slideUp(500);
 }
 
 </script>
@@ -90,50 +169,51 @@ function stopSelfVideo() {
   <form id="videoForm">
     <div id="videos"></div>
       <table align=center>
-	<tr><td>Widok lokalny</td><td>Widok zdalny</td></tr>
-	<tr height="240">
-	  <td width="320">
-	    <video id="selfView"
-		   width="320" height="240" autoplay controls>
-	    </video>
-	  </td>
-          <td width="320">
-	    <video id="peerView"
-		   width="320" height="240" autoplay controls>
-	    </video>
-	  </td>
-	</tr>
-	<tr><td>
-	    <input id="addButton"
-		   type="button"
-		   value="Włącz kamerę"
-		   onclick="requestSelfVideo();">
-		   
-		   <input id="removeButton"
-		   type="button"
-		   value="Wyłącz kamerę"
-		   onclick="stopSelfVideo();">
-	  </td>
-	  <td>
-	  </td>
-	</tr>
+				<tr height="240">
+					<td width="320">
+						<div class="videoDialog local"> 
+							<h2>Local camera</h2>
+							<div>
+								<video id="selfView" width="320" height="240" autoplay controls></video>
+							</div>
+						</div>
+					</td>
+						<td width="320">
+					
+							<div class="videoDialog remote"> 
+								<h2>Remote camera</h2>
+								<div>
+									<video id="peerView" width="320" height="240" autoplay controls></video>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr><td>
+						<input id="addButton"
+						 type="button"
+						 value="Turn on webcam"
+						 onclick="requestSelfVideo();">
+						 
+						 <input id="removeButton"
+						 type="button"
+						 value="Turn off webcam"
+						 onclick="stopSelfVideo();">
+					</td>
+					<td>
+					</td>
+				</tr>
       </table>        
   </form>
 
-  <hr />
-
   <div id="chat">
-    <form id="chatForm" action="javascript:sendChatMessage();">
-      Text chat
-      <input id="chatMessage" type="text" size="40">
-      <input type="submit" value="Wyślij">
-    </form>
     <textarea id="chatHistory" readonly cols="80" rows="6"></textarea>
+    <form id="chatForm" action="javascript:sendChatMessage();">
+      <input id="chatMessage" type="text" size="74" >
+      <input type="submit" value="Send">
+    </form>
   </div>
 
-  <hr />
-
-  <div id="footer">Autor: Karol Domagała, na podstawie Web RTC &nbsp;<a href="http://labs.ericsson.com/apis/web-real-time-communication">Ericsson Labs</a>.
+  <div id="footer">Author: Karol Domagala, based on Web RTC &nbsp;<a href="http://labs.ericsson.com/apis/web-real-time-communication">Ericsson Labs</a>.
 
 </div>
 

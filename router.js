@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 
-// obsluguje requesty do stron, funkcje dla GET i POST
 function route(handle, pathname, response, postData, queryData) {
 	Log.debug("Routing " + pathname);
 	if (typeof handle[pathname] ==='function') {
