@@ -1,6 +1,6 @@
 #Video Chat with ConnectionPeer API, WebSockets and Node.js
 
-The source is a demo application based on [Ericcson Labs video chat demo](https://labs.ericsson.com/apis/web-real-time-communication/).
+The source is a demo application based on [Ericsson Labs video chat demo](https://labs.ericsson.com/apis/web-real-time-communication/).
 I used [socket.io](https://github.com/LearnBoost/Socket.IO) websockets implementation as well as [hat](https://github.com/substack/node-hat) to generate unique ids
 what means that you have to install these modules on your computer for ex.:
 
